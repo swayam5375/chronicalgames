@@ -9,7 +9,20 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+
+    /* NEW BG ANIMATION */
+    animation: bgChange 6s infinite alternate;
 }
+
+/* BG animation */
+@keyframes bgChange {
+    0% { background-color: #000; }
+    25% { background-color: #0a0014; }
+    50% { background-color: #001032; }
+    75% { background-color: #001a20; }
+    100% { background-color: #000; }
+}
+
 
 /* 🔥 HEADER CENTERED */
 header {
@@ -102,4 +115,5 @@ footer {
     text-shadow: 0 0 8px #0ff;
     font-weight: bold;
 }
+
 
