@@ -1,52 +1,88 @@
 body {
     margin: 0;
-    background: #000;
-    color: #fff;
     font-family: Arial;
+    background: #111;
+    color: #fff;
 }
 
-/* Header */
+/* HEADER */
 header {
+    background: #222;
+    padding: 15px 20px;
     display: flex;
     justify-content: space-between;
-    padding: 20px;
-    background: linear-gradient(90deg, #111, #222, #111);
-    border-bottom: 2px solid #0ff;
-    box-shadow: 0 0 20px #0ff;
+    align-items: center;
 }
-
-.logo {
-    font-size: 28px;
-    color: #0ff;
-    text-shadow: 0 0 10px #0ff;
-}
-
-nav a {
-    margin: 0 15px;
-    color: #0ff;
-    text-decoration: none;
+header .logo {
+    font-size: 24px;
     font-weight: bold;
 }
-
-nav a:hover {
-    text-shadow: 0 0 10px #0ff;
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 18px;
 }
 
-/* Hero section */
+/* HOME PAGE */
 .hero {
     text-align: center;
-    padding: 100px 20px;
+    padding: 120px 20px;
 }
-
 .btn {
-    background: #0ff;
+    background: #0f0;
     padding: 12px 25px;
+    border-radius: 8px;
     color: #000;
-    border-radius: 5px;
-    font-weight: bold;
     text-decoration: none;
+    font-weight: bold;
 }
 
-.btn:hover {
-    box-shadow: 0 0 20px #0ff;
+/* GAMES PAGE */
+.games-list {
+    text-align: center;
+    padding: 40px;
+}
+.game-card {
+    background: #222;
+    padding: 25px;
+    margin: 20px auto;
+    width: 320px;
+    border-radius: 12px;
+}
+
+/* FAST TYPING */
+.typing-container {
+    text-align: center;
+    margin-top: 80px;
+}
+#word {
+    font-size: 40px;
+}
+#input {
+    padding: 10px;
+    font-size: 20px;
+    width: 250px;
+    text-align: center;
+}
+.options button {
+    background: #0f0;
+    border: none;
+    padding: 10px 20px;
+    margin: 8px;
+    font-size: 18px;
+    border-radius: 8px;
+}
+.score-box {
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+/* FOOTER */
+footer {
+    margin-top: 80px;
+    text-align: center;
+    padding: 20px;
+    background: #222;
+    font-size: 18px;
 }
