@@ -143,7 +143,13 @@ footer {
     font-size: 28px;
     padding: 15px;
     width: 350px;
+    max-width: 90%;
+    background: #fff;      /* PURE WHITE */
+    color: #000;           /* Black text */
+    border-radius: 8px;
+    border: 2px solid #0ff;
 }
+
 
 /* SCORE ANIMATION */
 .score-zoom {
@@ -201,3 +207,4 @@ footer {
         padding: 10px;
     }
 }
+
