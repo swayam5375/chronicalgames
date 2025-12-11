@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- SUPER IMPORTANT FOR MOBILE -->
     <title>Fast Typing - ChronicalGames</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -18,34 +19,43 @@
 
 <div class="typing-container">
 
-    <h1>⚡ Fast Typing Challenge ⚡</h1>
+    <h1 style="margin-top: 40px; font-size: 28px;">⚡ Fast Typing Challenge ⚡</h1>
 
     <!-- Difficulty Select -->
-    <div id="difficultySelect" class="options">
-        <p>Select Difficulty:</p>
-        <button onclick="setDifficulty('easy')">Easy 😀</button>
-        <button onclick="setDifficulty('medium')">Medium 😎</button>
-        <button onclick="setDifficulty('hard')">Hard 🔥</button>
+    <div id="difficultySelect" class="options" style="margin-top: 20px;">
+        <p style="font-size: 18px;">Select Difficulty:</p>
+
+        <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+            <button onclick="setDifficulty('easy')">Easy 😀</button>
+            <button onclick="setDifficulty('medium')">Medium 😎</button>
+            <button onclick="setDifficulty('hard')">Hard 🔥</button>
+        </div>
     </div>
 
     <!-- Time Select -->
-    <div id="timeSelect" class="options" style="display:none;">
-        <p>Select Time:</p>
-        <button onclick="startGame(20)">20 sec</button>
-        <button onclick="startGame(30)">30 sec</button>
-        <button onclick="startGame(60)">60 sec</button>
+    <div id="timeSelect" class="options" style="display:none; margin-top: 20px;">
+        <p style="font-size:18px;">Select Time:</p>
+
+        <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+            <button onclick="startGame(20)">20 sec</button>
+            <button onclick="startGame(30)">30 sec</button>
+            <button onclick="startGame(60)">60 sec</button>
+        </div>
     </div>
 
     <!-- Game Area -->
-    <div id="gameArea" style="display:none;">
-        <div id="word">---</div>
-        <input id="input" placeholder="Type here...">
+    <div id="gameArea" style="display:none; margin-top: 20px;">
 
-        <div class="score-box">
+        <div id="word" style="margin-bottom: 20px;">---</div>
+
+        <input id="input" placeholder="Type here..." style="max-width: 90%;">
+
+        <div class="score-box" style="margin-top: 25px; font-size:18px;">
             <div>Current Score: <span id="score">0</span></div>
             <div>High Score: <span id="highscore">0</span></div>
             <div>Time Left: <span id="time">0</span>s</div>
         </div>
+
     </div>
 
     <!-- Popup -->
@@ -65,3 +75,4 @@
 <script src="game.js"></script>
 </body>
 </html>
+
