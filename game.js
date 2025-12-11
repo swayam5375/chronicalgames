@@ -1,122 +1,153 @@
-/* ------------------ SOUND FILES ------------------ */
-let soundCorrect = new Audio("sounds/correct.wav");
-let soundClick = new Audio("sounds/click.wav");
-let soundTimeOver = new Audio("sounds/timeover.wav");
-
-/* ------------------ WORD LIST ------------------ */
-let words = [
-"galaxy","future","coding","gaming","matrix","shadow","neon","energy",
-"command","rocket","fusion","cyber","titan","random","system","python",
-"keyboard","monitor","program","attack","hunter","dragon","cosmic","planet",
-"charge","spark","vector","pixel","shader","speed","rapid","blast","switch",
-"battle","savage","storm","electric","thunder","warrior","phantom","ghost",
-"cyberpunk","ultimate","damnation","keyboard","reflex","powerful","mission"
-];
-
-/* ------------------ GAME VARIABLES ------------------ */
-let difficulty = "easy";
+// ===================== GLOBALS =====================
 let score = 0;
 let timeLeft = 0;
 let timer;
-let high = localStorage.getItem("highscore") || 0;
+let currentDifficulty = "";
 
-document.getElementById("highscore").innerText = high;
+// Highscores — separate for each difficulty
+let highscore_easy = parseInt(localStorage.getItem("highscore_easy")) || 0;
+let highscore_medium = parseInt(localStorage.getItem("highscore_medium")) || 0;
+let highscore_hard = parseInt(localStorage.getItem("highscore_hard")) || 0;
 
-/* ------------------ DIFFICULTY SELECT ------------------ */
-function setDifficulty(level) {
-    soundClick.play();                // 🔊 click
-    difficulty = level;
+// ===================== SOUND SETUP =====================
+const soundCorrect = new Audio("sounds/correct.wav");
+const soundClick = new Audio("sounds/click.wav");
+const soundTimeOver = new Audio("sounds/timeover.wav");
+
+// ===================== WORD FILTER LOGIC =====================
+function generateWordList(difficulty) {
+    const words = [
+        "time","game","code","fast","jump","play","hero","love","math","king",
+        "speed","laptop","charger","python","monitor","science","random","reactjs",
+        "keyboard","developer","computers","chocolate","university","interface"
+    ];
+
+    if (difficulty === "easy") {
+        return words.filter(w => w.length === 4);
+    } else if (difficulty === "medium") {
+        return words.filter(w => w.length === 7);
+    } else {
+        return words.filter(w => w.length === 10);
+    }
+}
+
+// ===================== ON DIFFICULTY SELECT =====================
+function setDifficulty(dif) {
+    soundClick.play();
+    currentDifficulty = dif;
+
+    if (dif === "easy") {
+        document.getElementById("highscore").innerText = highscore_easy;
+    } else if (dif === "medium") {
+        document.getElementById("highscore").innerText = highscore_medium;
+    } else {
+        document.getElementById("highscore").innerText = highscore_hard;
+    }
 
     document.getElementById("difficultySelect").style.display = "none";
     document.getElementById("timeSelect").style.display = "block";
 }
 
-/* ------------------ TIME SELECT + START GAME ------------------ */
-function startGame(t) {
-    soundClick.play();                // 🔊 click
+// ===================== START GAME =====================
+function startGame(seconds) {
+    soundClick.play();
 
-    timeLeft = t;
+    timeLeft = seconds;
     score = 0;
 
-    document.getElementById("score").innerText = 0;
-    document.getElementById("time").innerText = t;
+    document.getElementById("time").innerText = timeLeft;
+    document.getElementById("score").innerText = score;
 
     document.getElementById("timeSelect").style.display = "none";
     document.getElementById("gameArea").style.display = "block";
 
     newWord();
-    timer = setInterval(updateTime, 1000);
-
-    document.getElementById("input").addEventListener("input", checkWord);
+    startTimer();
 }
 
-/* ------------------ NEW WORD ------------------ */
+// ===================== GENERATE NEW WORD =====================
 function newWord() {
+    const list = generateWordList(currentDifficulty);
+    const randomWord = list[Math.floor(Math.random() * list.length)];
 
-    let filtered = words.filter(w => {
-        if (difficulty === "easy") return w.length <= 6;
-        if (difficulty === "medium") return w.length <= 8;
-        return w.length <= 10;
-    });
+    const wordElement = document.getElementById("word");
+    wordElement.innerText = randomWord;
 
-    let random = filtered[Math.floor(Math.random() * filtered.length)];
-
-    let wordBox = document.getElementById("word");
-    wordBox.innerText = random;
-
-    // 🔥 ZOOM animation on every new word
-    wordBox.style.transform = "scale(1.3)";
-    wordBox.style.transition = "0.15s";
-    setTimeout(() => {
-        wordBox.style.transform = "scale(1)";
-    }, 150);
+    wordElement.style.transform = "scale(1.2)";
+    setTimeout(() => { wordElement.style.transform = "scale(1)"; }, 150);
 }
 
-/* ------------------ CHECK TYPED WORD ------------------ */
-function checkWord() {
-    let typed = document.getElementById("input").value;
-    let target = document.getElementById("word").innerText;
+// ===================== TIMER =====================
+function startTimer() {
+    timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById("time").innerText = timeLeft;
 
-    if (typed === target) {
-        soundCorrect.play();             // 🔊 tik sound
-        
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            endGame();
+        }
+    }, 1000);
+}
+
+// ===================== INPUT CHECK =====================
+document.getElementById("input").addEventListener("input", function() {
+    const typed = this.value.trim();
+    const word = document.getElementById("word").innerText;
+
+    if (typed === word) {
+        soundCorrect.play();
         score++;
         document.getElementById("score").innerText = score;
-        document.getElementById("input").value = "";
+        this.value = "";
 
+        updateHighscore();
         newWord();
+    }
+});
 
-        if (score > high) {
-            high = score;
-            localStorage.setItem("highscore", high);
-            document.getElementById("highscore").innerText = high;
+// ===================== HIGHSCORE UPDATE =====================
+function updateHighscore() {
+    if (currentDifficulty === "easy") {
+        if (score > highscore_easy) {
+            highscore_easy = score;
+            localStorage.setItem("highscore_easy", highscore_easy);
         }
+        document.getElementById("highscore").innerText = highscore_easy;
+    }
+
+    else if (currentDifficulty === "medium") {
+        if (score > highscore_medium) {
+            highscore_medium = score;
+            localStorage.setItem("highscore_medium", highscore_medium);
+        }
+        document.getElementById("highscore").innerText = highscore_medium;
+    }
+
+    else {
+        if (score > highscore_hard) {
+            highscore_hard = score;
+            localStorage.setItem("highscore_hard", highscore_hard);
+        }
+        document.getElementById("highscore").innerText = highscore_hard;
     }
 }
 
-/* ------------------ TIMER ------------------ */
-function updateTime() {
-    timeLeft--;
-    document.getElementById("time").innerText = timeLeft;
-
-    if (timeLeft <= 0) {
-        clearInterval(timer);
-        endGame();
-    }
-}
-
-/* ------------------ GAME OVER / POPUP ------------------ */
+// ===================== END GAME (POPUP) =====================
 function endGame() {
-    soundTimeOver.play();         // 🔊 time over buzzer
+    soundTimeOver.play();
 
-    document.getElementById("finalScore").innerText = score;
-    document.getElementById("finalHigh").innerText = high;
+    let highScoreDisplay =
+        currentDifficulty === "easy" ? highscore_easy :
+        currentDifficulty === "medium" ? highscore_medium :
+        highscore_hard;
 
-    document.getElementById("popup").style.display = "flex";
-}
-
-/* ------------------ RESTART ------------------ */
-function restartGame() {
-    soundClick.play();
-    location.reload();
+    document.getElementById("gameArea").innerHTML = `
+        <h2>⏳ Time Over!</h2>
+        <p>Your Score: <b>${score}</b></p>
+        <p>Highest Score: <b>${highScoreDisplay}</b></p><br>
+        
+        <button onclick="location.reload()">🔁 Restart</button><br><br>
+        <button onclick="window.location.href='index.html'">🏠 Exit to Home</button>
+    `;
 }
