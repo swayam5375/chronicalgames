@@ -15,6 +15,17 @@ let high = localStorage.getItem("highscore") || 0;
 
 document.getElementById("highscore").innerText = high;
 
+/* 🔊 SOUND EFFECTS */
+const correctSound = new Audio("sounds/correct.mp3");
+const timeSound = new Audio("sounds/timeover.mp3");
+const clickSound = new Audio("sounds/click.mp3");
+
+/* Make all buttons play click sound */
+document.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => clickSound.play());
+});
+
+
 function setDifficulty(level) {
     difficulty = level;
     document.getElementById("difficultySelect").style.display = "none";
@@ -55,6 +66,16 @@ function checkWord() {
     if (typed === target) {
         score++;
         document.getElementById("score").innerText = score;
+
+        /* ⭐ SCORE ZOOM BURST ANIMATION */
+        let s = document.getElementById("score");
+        s.classList.remove("score-zoom");
+        void s.offsetWidth;          // Re-trigger animation
+        s.classList.add("score-zoom");
+
+        /* PLAY CORRECT SOUND */
+        correctSound.play();
+
         document.getElementById("input").value = "";
         newWord();
 
@@ -77,6 +98,10 @@ function updateTime() {
 }
 
 function endGame() {
+
+    /* 🔊 TIME OVER SOUND */
+    timeSound.play();
+
     document.getElementById("finalScore").innerText = score;
     document.getElementById("finalHigh").innerText = high;
 
