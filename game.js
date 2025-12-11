@@ -1,4 +1,4 @@
-```javascript
+
 const words = [
 "speed", "gaming", "chronical", "rgb", "keyboard", "power", "flash",
 "hyper", "coding", "swayam", "beast", "focus"
@@ -35,4 +35,4 @@ time--;
 document.getElementById("time").textContent = `Time: ${time}`;
 }
 }, 1000);
-```
+
