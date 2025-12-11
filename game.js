@@ -1,3 +1,9 @@
+/* ------------------ SOUND FILES ------------------ */
+let soundCorrect = new Audio("sounds/correct.wav");
+let soundClick = new Audio("sounds/click.wav");
+let soundTimeOver = new Audio("sounds/timeover.wav");
+
+/* ------------------ WORD LIST ------------------ */
 let words = [
 "galaxy","future","coding","gaming","matrix","shadow","neon","energy",
 "command","rocket","fusion","cyber","titan","random","system","python",
@@ -7,6 +13,7 @@ let words = [
 "cyberpunk","ultimate","damnation","keyboard","reflex","powerful","mission"
 ];
 
+/* ------------------ GAME VARIABLES ------------------ */
 let difficulty = "easy";
 let score = 0;
 let timeLeft = 0;
@@ -15,24 +22,19 @@ let high = localStorage.getItem("highscore") || 0;
 
 document.getElementById("highscore").innerText = high;
 
-/* 🔊 SOUND EFFECTS */
-const correctSound = new Audio("sounds/correct.mp3");
-const timeSound = new Audio("sounds/timeover.mp3");
-const clickSound = new Audio("sounds/click.mp3");
-
-/* Make all buttons play click sound */
-document.querySelectorAll("button").forEach(btn => {
-    btn.addEventListener("click", () => clickSound.play());
-});
-
-
+/* ------------------ DIFFICULTY SELECT ------------------ */
 function setDifficulty(level) {
+    soundClick.play();                // 🔊 click
     difficulty = level;
+
     document.getElementById("difficultySelect").style.display = "none";
     document.getElementById("timeSelect").style.display = "block";
 }
 
+/* ------------------ TIME SELECT + START GAME ------------------ */
 function startGame(t) {
+    soundClick.play();                // 🔊 click
+
     timeLeft = t;
     score = 0;
 
@@ -48,35 +50,40 @@ function startGame(t) {
     document.getElementById("input").addEventListener("input", checkWord);
 }
 
+/* ------------------ NEW WORD ------------------ */
 function newWord() {
+
     let filtered = words.filter(w => {
         if (difficulty === "easy") return w.length <= 6;
         if (difficulty === "medium") return w.length <= 8;
         return w.length <= 10;
     });
 
-    document.getElementById("word").innerText = 
-        filtered[Math.floor(Math.random() * filtered.length)];
+    let random = filtered[Math.floor(Math.random() * filtered.length)];
+
+    let wordBox = document.getElementById("word");
+    wordBox.innerText = random;
+
+    // 🔥 ZOOM animation on every new word
+    wordBox.style.transform = "scale(1.3)";
+    wordBox.style.transition = "0.15s";
+    setTimeout(() => {
+        wordBox.style.transform = "scale(1)";
+    }, 150);
 }
 
+/* ------------------ CHECK TYPED WORD ------------------ */
 function checkWord() {
     let typed = document.getElementById("input").value;
     let target = document.getElementById("word").innerText;
 
     if (typed === target) {
+        soundCorrect.play();             // 🔊 tik sound
+        
         score++;
         document.getElementById("score").innerText = score;
-
-        /* ⭐ SCORE ZOOM BURST ANIMATION */
-        let s = document.getElementById("score");
-        s.classList.remove("score-zoom");
-        void s.offsetWidth;          // Re-trigger animation
-        s.classList.add("score-zoom");
-
-        /* PLAY CORRECT SOUND */
-        correctSound.play();
-
         document.getElementById("input").value = "";
+
         newWord();
 
         if (score > high) {
@@ -87,6 +94,7 @@ function checkWord() {
     }
 }
 
+/* ------------------ TIMER ------------------ */
 function updateTime() {
     timeLeft--;
     document.getElementById("time").innerText = timeLeft;
@@ -97,10 +105,9 @@ function updateTime() {
     }
 }
 
+/* ------------------ GAME OVER / POPUP ------------------ */
 function endGame() {
-
-    /* 🔊 TIME OVER SOUND */
-    timeSound.play();
+    soundTimeOver.play();         // 🔊 time over buzzer
 
     document.getElementById("finalScore").innerText = score;
     document.getElementById("finalHigh").innerText = high;
@@ -108,6 +115,8 @@ function endGame() {
     document.getElementById("popup").style.display = "flex";
 }
 
+/* ------------------ RESTART ------------------ */
 function restartGame() {
+    soundClick.play();
     location.reload();
 }
