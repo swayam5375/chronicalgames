@@ -1,38 +1,86 @@
+let words = {
+    easy: ["cat", "dog", "sun", "ball", "tree", "milk", "fish"],
+    medium: ["planet", "yellow", "orange", "mobile", "school", "garden"],
+    hard: ["javascript", "chronical", "algorithm", "computer", "frequency"]
+};
 
-const words = [
-"speed", "gaming", "chronical", "rgb", "keyboard", "power", "flash",
-"hyper", "coding", "swayam", "beast", "focus"
-];
+let currentDifficulty = "easy";
 let score = 0;
-let time = 30;
+let highscore = localStorage.getItem("fast_highscore") || 0;
+document.getElementById("highscore").innerText = highscore;
+let timeLeft = 0;
+let timer;
 let currentWord = "";
 
-
-const wordDisplay = document.getElementById("word");
-inp = document.getElementById("input");
-
-
-function newWord() {
-currentWord = words[Math.floor(Math.random() * words.length)];
-wordDisplay.textContent = currentWord;
+function setDifficulty(level) {
+    currentDifficulty = level;
+    document.getElementById("difficultySelect").style.display = "none";
+    document.getElementById("timeSelect").style.display = "block";
 }
-newWord();
 
+function startGame(seconds) {
+    timeLeft = seconds;
+    score = 0;
 
-inp.addEventListener("input", () => {
-if (inp.value === currentWord) {
-score++;
-document.getElementById("score").textContent = `Score: ${score}`;
-inp.value = "";
-newWord();
+    document.getElementById("score").innerText = score;
+    document.getElementById("time").innerText = timeLeft;
+
+    document.getElementById("timeSelect").style.display = "none";
+    document.getElementById("gameArea").style.display = "block";
+
+    nextWord();
+
+    timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById("time").innerText = timeLeft;
+
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            endGame();
+        }
+    }, 1000);
+
+    document.getElementById("input").addEventListener("input", checkInput);
 }
-});
 
-
-setInterval(() => {
-if (time > 0) {
-time--;
-document.getElementById("time").textContent = `Time: ${time}`;
+function nextWord() {
+    let list = words[currentDifficulty];
+    currentWord = list[Math.floor(Math.random() * list.length)];
+    document.getElementById("word").innerText = currentWord;
+    document.getElementById("input").value = "";
 }
-}, 1000);
 
+function checkInput() {
+    let typed = document.getElementById("input").value;
+
+    if (typed === currentWord) {
+        score++;
+        document.getElementById("score").innerText = score;
+
+        showPopup("+1");
+        nextWord();
+    }
+}
+
+function endGame() {
+    alert("⏳ Time's Up!\nYour Score: " + score);
+
+    if (score > highscore) {
+        highscore = score;
+        localStorage.setItem("fast_highscore", highscore);
+        document.getElementById("highscore").innerText = highscore;
+        alert("🏆 NEW HIGH SCORE!");
+    }
+
+    location.reload();
+}
+
+function showPopup(text) {
+    let popup = document.getElementById("popup");
+    popup.innerText = text;
+    popup.classList.add("popup");
+    setTimeout(() => {
+        popup.classList.remove("popup");
+        popup.innerText = "";
+    }, 500);
+}
