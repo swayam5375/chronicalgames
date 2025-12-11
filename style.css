@@ -115,5 +115,20 @@ footer {
     text-shadow: 0 0 8px #0ff;
     font-weight: bold;
 }
+.options button {
+    padding: 18px 35px;
+    font-size: 22px;
+    border-radius: 10px;
+    margin: 10px;
+    background: #0ff;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.options button:hover {
+    box-shadow: 0 0 20px #0ff;
+}
+
 
 
