@@ -1,93 +1,50 @@
+<!-- fastyping.html updated code -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ChronicalGames - Fast Typing</title>
-    <link rel="stylesheet" href="style.css" />
-
-    <style>
-        .typing-container {
-            text-align: center;
-            margin-top: 80px;
-        }
-        #word {
-            font-size: 50px;
-            margin-bottom: 20px;
-            text-shadow: 0 0 15px #0ff;
-        }
-        #input {
-            padding: 12px;
-            font-size: 22px;
-            width: 260px;
-            border: 2px solid #0ff;
-            background: #000;
-            color: #0ff;
-            text-align: center;
-            border-radius: 8px;
-        }
-        .options button,
-        .exit-btn {
-            background: #0ff;
-            border: none;
-            padding: 12px 25px;
-            margin: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 6px;
-        }
-        .exit-btn {
-            background: red;
-        }
-        .exit-btn:hover {
-            background: #ff3333;
-        }
-    </style>
-
+  <meta charset="UTF-8" />
+  <title>Fast Typing Game</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="container">
+    <h1>Fast Typing</h1>
+    <div id="game-settings">
+      <label>Difficulty:</label>
+      <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
 
-<header>
-    <div class="logo">ChronicalGames</div>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="games.html">Games</a>
-    </nav>
-</header>
+      <label>Timer:</label>
+      <select id="timer">
+        <option value="30">30 sec</option>
+        <option value="45">45 sec</option>
+        <option value="60">60 sec</option>
+      </select>
 
-<div class="typing-container">
-    <h1>⚡ Fast Typing Challenge ⚡</h1>
-
-    <div id="difficultySelect" class="options">
-        <p>Choose Difficulty:</p>
-        <button onclick="setDifficulty('easy')">Easy 😀</button>
-        <button onclick="setDifficulty('medium')">Medium 😎</button>
-        <button onclick="setDifficulty('hard')">Hard 🔥</button>
+      <button id="startBtn">Start Game</button>
     </div>
 
-    <div id="timeSelect" class="options" style="display:none;">
-        <p>Select Time:</p>
-        <button onclick="startGame(20)">20 sec</button>
-        <button onclick="startGame(30)">30 sec</button>
-        <button onclick="startGame(60)">60 sec</button>
+    <div id="game-area" class="hidden">
+      <p id="word"></p>
+      <input id="input" type="text" placeholder="type here..." autofocus />
+      <p>Time Left: <span id="time"></span></p>
+      <p>Score: <span id="score"></span></p>
     </div>
+  </div>
 
-    <div id="gameArea" style="display:none;">
-        <div id="word">---</div>
-        <input id="input" placeholder="Type here...">
-
-        <div class="score-box">
-            <p>Score: <span id="score">0</span></p>
-            <p>High Score: <span id="highscore">0</span></p>
-            <p>Time Left: <span id="time">0</span>s</p>
-        </div>
-
-        <div id="popup"></div>
-
-        <button class="exit-btn" onclick="exitGame()">Exit Game</button>
+  <div id="popup" class="popup hidden">
+    <div class="popup-box">
+      <h2>Time Over!</h2>
+      <p>Current Score: <span id="finalScore"></span></p>
+      <p>Highest Score: <span id="highScore"></span></p>
+      <button onclick="restartGame()">Restart</button>
+      <button onclick="exitGame()">Exit Game</button>
     </div>
-</div>
+  </div>
 
-<script src="game.js"></script>
+  <script src="game.js"></script>
 </body>
 </html>
