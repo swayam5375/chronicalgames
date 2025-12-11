@@ -1,50 +1,67 @@
-<!-- fastyping.html updated code -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Fast Typing Game</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <title>Fast Typing - ChronicalGames</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <div class="container">
-    <h1>Fast Typing</h1>
-    <div id="game-settings">
-      <label>Difficulty:</label>
-      <select id="difficulty">
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-      </select>
 
-      <label>Timer:</label>
-      <select id="timer">
-        <option value="30">30 sec</option>
-        <option value="45">45 sec</option>
-        <option value="60">60 sec</option>
-      </select>
+<header>
+    <div class="logo">ChronicalGames</div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="games.html">Games</a>
+    </nav>
+</header>
 
-      <button id="startBtn">Start Game</button>
+<div class="typing-container">
+
+    <h1>⚡ Fast Typing Challenge ⚡</h1>
+
+    <!-- Difficulty Select -->
+    <div id="difficultySelect" class="options">
+        <p>Select Difficulty:</p>
+        <button onclick="setDifficulty('easy')">Easy 😀</button>
+        <button onclick="setDifficulty('medium')">Medium 😎</button>
+        <button onclick="setDifficulty('hard')">Hard 🔥</button>
     </div>
 
-    <div id="game-area" class="hidden">
-      <p id="word"></p>
-      <input id="input" type="text" placeholder="type here..." autofocus />
-      <p>Time Left: <span id="time"></span></p>
-      <p>Score: <span id="score"></span></p>
+    <!-- Time Select -->
+    <div id="timeSelect" class="options" style="display:none;">
+        <p>Select Time:</p>
+        <button onclick="startGame(20)">20 sec</button>
+        <button onclick="startGame(30)">30 sec</button>
+        <button onclick="startGame(60)">60 sec</button>
     </div>
-  </div>
 
-  <div id="popup" class="popup hidden">
-    <div class="popup-box">
-      <h2>Time Over!</h2>
-      <p>Current Score: <span id="finalScore"></span></p>
-      <p>Highest Score: <span id="highScore"></span></p>
-      <button onclick="restartGame()">Restart</button>
-      <button onclick="exitGame()">Exit Game</button>
+    <!-- Game Area -->
+    <div id="gameArea" style="display:none;">
+        <div id="word">---</div>
+        <input id="input" placeholder="Type here...">
+
+        <div class="score-box">
+            <div>Current Score: <span id="score">0</span></div>
+            <div>High Score: <span id="highscore">0</span></div>
+            <div>Time Left: <span id="time">0</span>s</div>
+        </div>
     </div>
-  </div>
 
-  <script src="game.js"></script>
+    <!-- Popup -->
+    <div id="popup" class="endPopup" style="display:none;">
+        <div class="popupBox">
+            <h2>⏳ Time Over!</h2>
+            <p>Your Score: <span id="finalScore">0</span></p>
+            <p>Highest Score: <span id="finalHigh">0</span></p>
+
+            <button onclick="restartGame()">Restart</button>
+            <a href="index.html"><button class="exitBtn">Exit</button></a>
+        </div>
+    </div>
+
+</div>
+
+<script src="game.js"></script>
 </body>
 </html>
