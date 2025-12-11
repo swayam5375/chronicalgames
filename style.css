@@ -1,88 +1,42 @@
+/* style.css updated */
 body {
-    margin: 0;
-    font-family: Arial;
-    background: #111;
-    color: #fff;
+  background: #111;
+  color: #fff;
+  font-family: Arial;
+  text-align: center;
 }
 
-/* HEADER */
-header {
-    background: #222;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-header .logo {
-    font-size: 24px;
-    font-weight: bold;
-}
-nav a {
-    color: #fff;
-    text-decoration: none;
-    margin-left: 20px;
-    font-size: 18px;
+.container {
+  margin-top: 40px;
 }
 
-/* HOME PAGE */
-.hero {
-    text-align: center;
-    padding: 120px 20px;
-}
-.btn {
-    background: #0f0;
-    padding: 12px 25px;
-    border-radius: 8px;
-    color: #000;
-    text-decoration: none;
-    font-weight: bold;
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-/* GAMES PAGE */
-.games-list {
-    text-align: center;
-    padding: 40px;
-}
-.game-card {
-    background: #222;
-    padding: 25px;
-    margin: 20px auto;
-    width: 320px;
-    border-radius: 12px;
+.hidden {
+  display: none;
 }
 
-/* FAST TYPING */
-.typing-container {
-    text-align: center;
-    margin-top: 80px;
-}
-#word {
-    font-size: 40px;
-}
-#input {
-    padding: 10px;
-    font-size: 20px;
-    width: 250px;
-    text-align: center;
-}
-.options button {
-    background: #0f0;
-    border: none;
-    padding: 10px 20px;
-    margin: 8px;
-    font-size: 18px;
-    border-radius: 8px;
-}
-.score-box {
-    margin-top: 20px;
-    font-size: 20px;
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* FOOTER */
-footer {
-    margin-top: 80px;
-    text-align: center;
-    padding: 20px;
-    background: #222;
-    font-size: 18px;
+.popup-box {
+  background: #222;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
 }
