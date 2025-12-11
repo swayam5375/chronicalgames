@@ -39,7 +39,6 @@ function startGame(seconds) {
 }
 
 function nextWord() {
-
     let filtered = words.filter(w => {
         if (difficulty === "easy") return w.length <= 6;
         if (difficulty === "medium") return w.length <= 8;
@@ -58,7 +57,7 @@ function startTimer() {
 
         if (timeLeft <= 0) {
             clearInterval(timer);
-            endGame();
+            showResultScreen();
         }
     }, 1000);
 }
@@ -83,18 +82,60 @@ function popup(text) {
     setTimeout(() => box.innerText = "", 500);
 }
 
-function endGame() {
-    popup("Game Over!");
+function showResultScreen() {
 
     if (score > highscore) {
+        highscore = score;
         localStorage.setItem("highscore", score);
     }
 
-    setTimeout(() => {
-        window.location.reload();
-    }, 1500);
+    document.body.innerHTML += `
+        <div id="resultBox" style="
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #0ff;
+            font-size: 28px;
+            text-align: center;
+        ">
+            <h1>⏳ Time Over!</h1>
+            <p>Your Score: <strong>${score}</strong></p>
+            <p>Highest Score: <strong>${highscore}</strong></p>
+
+            <button onclick="restartGame()" style="
+                padding: 12px 28px;
+                font-size: 20px;
+                background: #0ff;
+                color: #000;
+                margin-top: 20px;
+                border-radius: 10px;
+                border: none;
+                font-weight: bold;
+            ">Restart</button>
+
+            <button onclick="exitGame()" style="
+                padding: 12px 28px;
+                font-size: 20px;
+                background: red;
+                color: #fff;
+                margin-top: 15px;
+                border-radius: 10px;
+                border: none;
+                font-weight: bold;
+            ">Exit Game</button>
+        </div>
+    `;
+}
+
+function restartGame() {
+    window.location.reload();
 }
 
 function exitGame() {
-    window.location.href = "games.html";
+    window.location.href = "index.html";
 }
