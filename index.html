@@ -2,27 +2,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ChronicalGames</title>
-<link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChronicalGames - Fast Typing</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .typing-container {
+            text-align: center;
+            margin-top: 80px;
+        }
+        #word {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+        #input {
+            padding: 10px;
+            font-size: 20px;
+            width: 250px;
+            text-align: center;
+        }
+        .score-box {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        .options {
+            margin-top: 30px;
+            font-size: 20px;
+        }
+        .popup {
+            font-size: 24px;
+            font-weight: bold;
+            animation: pop 0.5s ease;
+            color: #0f0;
+        }
+        @keyframes pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1.3); opacity: 1; }
+        }
+    </style>
 </head>
 <body>
-<header>
-<h1>ChronicalGames</h1>
-<nav>
-<a href="index.html">Home</a>
-<a href="games.html">Games</a>
-</nav>
-</header>
 
+    <header>
+        <div class="logo">ChronicalGames</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="games.html">Games</a>
+        </nav>
+    </header>
 
-<section class="hero">
-<h2>Welcome to ChronicalGames</h2>
-<p>The home of fast-paced RGB‑styled browser games.</p>
-<a href="games.html" class="btn">Play Now</a>
-</section>
+    <div class="typing-container">
+        <h1>⚡ Fast Typing Challenge ⚡</h1>
+
+        <div id="difficultySelect" class="options">
+            <p>Choose Difficulty Level:</p>
+            <button onclick="setDifficulty('easy')">Easy 😀</button>
+            <button onclick="setDifficulty('medium')">Medium 😎</button>
+            <button onclick="setDifficulty('hard')">Hard 🔥</button>
+        </div>
+
+        <div id="timeSelect" class="options" style="display:none;">
+            <p>Select Time:</p>
+            <button onclick="startGame(20)">20 sec</button>
+            <button onclick="startGame(30)">30 sec</button>
+            <button onclick="startGame(60)">60 sec</button>
+        </div>
+
+        <div id="gameArea" style="display:none;">
+            <div id="word">---</div>
+            <input id="input" placeholder="Type here..." />
+
+            <div class="score-box">
+                <div>Current Score: <span id="score">0</span></div>
+                <div>High Score: <span id="highscore">0</span></div>
+                <div>Time Left: <span id="time">0</span>s</div>
+            </div>
+
+            <div id="popup"></div>
+        </div>
+    </div>
+
+<script src="game.js"></script>
 </body>
 </html>
-```
-
