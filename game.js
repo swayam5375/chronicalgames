@@ -1,19 +1,26 @@
-let words = {
-    easy: ["cat", "dog", "sun", "ball", "tree", "milk", "fish"],
-    medium: ["planet", "yellow", "orange", "mobile", "school", "garden"],
-    hard: ["javascript", "chronical", "algorithm", "computer", "frequency"]
-};
+let words = [
+"galaxy","rhythm","quantum","neonlight","velocity","python","gaming","monitor",
+"keyboard","reaction","tracking","hyperion","dominance","spectrum","digital",
+"terminal","cyberwolf","flashback","overclock","settings","powerful","shooter",
+"challenge","dominate","progress","infinite","accuracy","turbo","savage",
+"phantom","network","virtual","systematic","frequency","eclipse","magnetic",
+"electric","processor","gigabyte","warrior","guardian","element","oxygen",
+"computer","software","hardware","interface","terminal","tracking","triple",
+"maximum","variable","hexagon","ultimate","pressure","dynamic","hyper","matrix",
+"gravity","magneto","turbozone","reactionx","firestorm","speedrun","typezone",
+"alphamax","combuster","nightcore"
+];
 
-let currentDifficulty = "easy";
+let difficulty = "easy";
 let score = 0;
-let highscore = localStorage.getItem("fast_highscore") || 0;
-document.getElementById("highscore").innerText = highscore;
+let highscore = localStorage.getItem("highscore") || 0;
 let timeLeft = 0;
 let timer;
-let currentWord = "";
+
+document.getElementById("highscore").innerText = highscore;
 
 function setDifficulty(level) {
-    currentDifficulty = level;
+    difficulty = level;
     document.getElementById("difficultySelect").style.display = "none";
     document.getElementById("timeSelect").style.display = "block";
 }
@@ -22,14 +29,29 @@ function startGame(seconds) {
     timeLeft = seconds;
     score = 0;
 
-    document.getElementById("score").innerText = score;
-    document.getElementById("time").innerText = timeLeft;
-
     document.getElementById("timeSelect").style.display = "none";
     document.getElementById("gameArea").style.display = "block";
 
     nextWord();
+    startTimer();
 
+    document.getElementById("input").focus();
+}
+
+function nextWord() {
+
+    let filtered = words.filter(w => {
+        if (difficulty === "easy") return w.length <= 6;
+        if (difficulty === "medium") return w.length <= 8;
+        if (difficulty === "hard") return w.length <= 10;
+    });
+
+    let random = filtered[Math.floor(Math.random() * filtered.length)];
+
+    document.getElementById("word").innerText = random;
+}
+
+function startTimer() {
     timer = setInterval(() => {
         timeLeft--;
         document.getElementById("time").innerText = timeLeft;
@@ -39,48 +61,40 @@ function startGame(seconds) {
             endGame();
         }
     }, 1000);
-
-    document.getElementById("input").addEventListener("input", checkInput);
 }
 
-function nextWord() {
-    let list = words[currentDifficulty];
-    currentWord = list[Math.floor(Math.random() * list.length)];
-    document.getElementById("word").innerText = currentWord;
-    document.getElementById("input").value = "";
-}
-
-function checkInput() {
+document.getElementById("input").addEventListener("input", () => {
     let typed = document.getElementById("input").value;
+    let current = document.getElementById("word").innerText;
 
-    if (typed === currentWord) {
+    if (typed === current) {
         score++;
         document.getElementById("score").innerText = score;
 
-        showPopup("+1");
+        popup("+1 😎");
+        document.getElementById("input").value = "";
         nextWord();
     }
+});
+
+function popup(text) {
+    let box = document.getElementById("popup");
+    box.innerText = text;
+    setTimeout(() => box.innerText = "", 500);
 }
 
 function endGame() {
-    alert("⏳ Time's Up!\nYour Score: " + score);
+    popup("Game Over!");
 
     if (score > highscore) {
-        highscore = score;
-        localStorage.setItem("fast_highscore", highscore);
-        document.getElementById("highscore").innerText = highscore;
-        alert("🏆 NEW HIGH SCORE!");
+        localStorage.setItem("highscore", score);
     }
 
-    location.reload();
+    setTimeout(() => {
+        window.location.reload();
+    }, 1500);
 }
 
-function showPopup(text) {
-    let popup = document.getElementById("popup");
-    popup.innerText = text;
-    popup.classList.add("popup");
-    setTimeout(() => {
-        popup.classList.remove("popup");
-        popup.innerText = "";
-    }, 500);
+function exitGame() {
+    window.location.href = "games.html";
 }
