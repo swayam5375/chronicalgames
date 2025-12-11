@@ -5,6 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ChronicalGames - Fast Typing</title>
     <link rel="stylesheet" href="style.css" />
+
+    <style>
+        .typing-container {
+            text-align: center;
+            margin-top: 80px;
+        }
+        #word {
+            font-size: 50px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px #0ff;
+        }
+        #input {
+            padding: 12px;
+            font-size: 22px;
+            width: 260px;
+            border: 2px solid #0ff;
+            background: #000;
+            color: #0ff;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .options button,
+        .exit-btn {
+            background: #0ff;
+            border: none;
+            padding: 12px 25px;
+            margin: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 6px;
+        }
+        .exit-btn {
+            background: red;
+        }
+        .exit-btn:hover {
+            background: #ff3333;
+        }
+    </style>
+
 </head>
 <body>
 
@@ -20,7 +59,7 @@
     <h1>⚡ Fast Typing Challenge ⚡</h1>
 
     <div id="difficultySelect" class="options">
-        <p>Choose Difficulty Level:</p>
+        <p>Choose Difficulty:</p>
         <button onclick="setDifficulty('easy')">Easy 😀</button>
         <button onclick="setDifficulty('medium')">Medium 😎</button>
         <button onclick="setDifficulty('hard')">Hard 🔥</button>
@@ -35,21 +74,19 @@
 
     <div id="gameArea" style="display:none;">
         <div id="word">---</div>
-        <input id="input" placeholder="Type here..." />
+        <input id="input" placeholder="Type here...">
 
         <div class="score-box">
-            <div>Current Score: <span id="score">0</span></div>
-            <div>High Score: <span id="highscore">0</span></div>
-            <div>Time Left: <span id="time">0</span>s</div>
+            <p>Score: <span id="score">0</span></p>
+            <p>High Score: <span id="highscore">0</span></p>
+            <p>Time Left: <span id="time">0</span>s</p>
         </div>
 
         <div id="popup"></div>
+
+        <button class="exit-btn" onclick="exitGame()">Exit Game</button>
     </div>
 </div>
-
-<footer>
-    Made with ❤️ by Swayam Sherekar
-</footer>
 
 <script src="game.js"></script>
 </body>
