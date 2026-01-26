@@ -177,6 +177,18 @@ function handleInput(e) {
     }
 }
 
+const resetBtn = document.getElementById("resetBtn");
+
+if (resetBtn) {
+  resetBtn.addEventListener("click", () => {
+    if (confirm("Reset all scores?")) {
+      localStorage.clear();
+      location.reload();
+    }
+  });
+}
+
+
 /* ---------- TIMER ---------- */
 function startTimer() {
     if (timer) clearInterval(timer);
@@ -220,4 +232,5 @@ function exitGame() {
 }
 
 /* ---------- END ---------- */
+
 
