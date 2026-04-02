@@ -51,22 +51,58 @@
             box-shadow: 0 0 15px #00ffe5;
         }
 
-        /* AI CHAT BOX */
-        #aiBox {
+        /* 🔥 AI POPUP */
+        .ai-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
             display: none;
-            margin-top: 30px;
+            justify-content: center;
+            align-items: center;
         }
 
-        #chatBox {
-            max-width: 400px;
-            margin: auto;
-            text-align: left;
-        }
-
-        input {
+        .ai-box {
+            width: 350px;
+            max-width: 90%;
+            background: #111;
+            border: 2px solid #0ff;
+            border-radius: 10px;
             padding: 10px;
-            width: 70%;
-            border-radius: 6px;
+        }
+
+        .ai-header {
+            display: flex;
+            justify-content: space-between;
+            color: #0ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .chat-box {
+            height: 250px;
+            overflow-y: auto;
+            text-align: left;
+            padding: 5px;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 5px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+        }
+
+        .chat-input button {
+            padding: 8px;
+            background: #0ff;
+            border: none;
+            cursor: pointer;
         }
 
         .signature {
@@ -93,46 +129,64 @@
 
     <div class="menu-box">
 
-        <!-- 🎮 GAMES BUTTON -->
+        <!-- 🎮 GAMES -->
         <button class="menu-btn" onclick="location.href='games.html'">
             🎮 Games
         </button>
 
-        <!-- 🤖 AI BOT BUTTON -->
+        <!-- 🤖 AI -->
         <button class="menu-btn" onclick="openAI()">
             🤖 AI Bot
         </button>
 
     </div>
 
-    <!-- 🤖 AI CHAT -->
-    <div id="aiBox">
-        <h2>AI Assistant</h2>
+    <!-- 🤖 AI POPUP -->
+    <div id="aiPopup" class="ai-popup">
 
-        <div id="chatBox"></div>
+        <div class="ai-box">
 
-        <input type="text" id="userInput" placeholder="Ask anything...">
-        <button onclick="sendMessage()">Send</button>
+            <div class="ai-header">
+                🤖 AI Assistant
+                <span onclick="closeAI()" style="cursor:pointer;">❌</span>
+            </div>
+
+            <div id="chatBox" class="chat-box"></div>
+
+            <div class="chat-input">
+                <input type="text" id="userInput" placeholder="Ask anything...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+
+        </div>
+
     </div>
 
     <div class="signature">Made with ❤️ by Swayam Sherekar</div>
 
 <script>
 function openAI() {
-    document.getElementById("aiBox").style.display = "block";
+    document.getElementById("aiPopup").style.display = "flex";
 }
 
-/* TEMP FAKE AI (frontend only) */
+function closeAI() {
+    document.getElementById("aiPopup").style.display = "none";
+}
+
 function sendMessage() {
     let input = document.getElementById("userInput").value;
-
     let chat = document.getElementById("chatBox");
+
+    if(input.trim() === "") return;
 
     chat.innerHTML += "<p><b>You:</b> " + input + "</p>";
 
     let reply = "I am an AI created by Swayam Sherekar 😎";
 
     chat.innerHTML += "<p><b>AI:</b> " + reply + "</p>";
+
+    document.getElementById("userInput").value = "";
+    chat.scrollTop = chat.scrollHeight;
 }
 </script>
 
