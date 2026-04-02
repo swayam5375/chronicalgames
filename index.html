@@ -51,7 +51,6 @@
             box-shadow: 0 0 15px #00ffe5;
         }
 
-        /* 🔥 AI POPUP */
         .ai-popup {
             position: fixed;
             top: 0;
@@ -129,19 +128,16 @@
 
     <div class="menu-box">
 
-        <!-- 🎮 GAMES -->
         <button class="menu-btn" onclick="location.href='games.html'">
             🎮 Games
         </button>
 
-        <!-- 🤖 AI -->
         <button class="menu-btn" onclick="openAI()">
             🤖 AI Bot
         </button>
 
     </div>
 
-    <!-- 🤖 AI POPUP -->
     <div id="aiPopup" class="ai-popup">
 
         <div class="ai-box">
@@ -173,7 +169,7 @@ function closeAI() {
     document.getElementById("aiPopup").style.display = "none";
 }
 
-function sendMessage() {
+async function sendMessage() {
     let input = document.getElementById("userInput").value;
     let chat = document.getElementById("chatBox");
 
@@ -181,9 +177,17 @@ function sendMessage() {
 
     chat.innerHTML += "<p><b>You:</b> " + input + "</p>";
 
-    let reply = "I am an AI created by Swayam Sherekar 😎";
+    let res = await fetch("http://localhost:3000/chat", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: input })
+    });
 
-    chat.innerHTML += "<p><b>AI:</b> " + reply + "</p>";
+    let data = await res.json();
+
+    chat.innerHTML += "<p><b>AI:</b> " + data.reply + "</p>";
 
     document.getElementById("userInput").value = "";
     chat.scrollTop = chat.scrollHeight;
