@@ -15,7 +15,6 @@
             text-align: center;
         }
 
-        /* ⭐ Neon Heading ⭐ */
         h1 {
             font-size: 50px;
             margin-top: 40px;
@@ -28,7 +27,6 @@
             text-shadow: 0 0 10px #ff00d4, 0 0 20px #ff00d4;
         }
 
-        /* Game Menu Container */
         .menu-box {
             margin-top: 50px;
         }
@@ -53,7 +51,24 @@
             box-shadow: 0 0 15px #00ffe5;
         }
 
-        /* ⭐ Bottom Signature ⭐ */
+        /* AI CHAT BOX */
+        #aiBox {
+            display: none;
+            margin-top: 30px;
+        }
+
+        #chatBox {
+            max-width: 400px;
+            margin: auto;
+            text-align: left;
+        }
+
+        input {
+            padding: 10px;
+            width: 70%;
+            border-radius: 6px;
+        }
+
         .signature {
             position: fixed;
             bottom: 15px;
@@ -61,57 +76,65 @@
             text-align: center;
             font-size: 18px;
             color: #ff4dfc;
-            text-shadow: 0 0 10px #ff4dfc;
         }
 
-        /* ============================
-           ⭐ REAL MOBILE RESPONSIVE FIX ⭐
-           ============================ */
-
         @media only screen and (max-width: 600px) {
-
-            body {
-                padding: 0 10px;
-            }
-
-            h1 {
-                font-size: 32px;      /* PERFECT for phone */
-                margin-top: 30px;
-            }
-
-            h2 {
-                font-size: 20px;
-            }
-
-            .menu-btn {
-                width: 90%;           /* buttons full responsive */
-                font-size: 20px;
-                padding: 14px;
-            }
-
-            .signature {
-                font-size: 16px;      /* fits bottom without overflow */
-                position: fixed;
-                bottom: 10px;
-            }
+            h1 { font-size: 32px; }
+            h2 { font-size: 20px; }
+            .menu-btn { width: 90%; font-size: 20px; }
         }
     </style>
 </head>
+
 <body>
 
     <h1>Chronicall</h1>
-    <h2>Home • Games</h2>
+    <h2>Home • Games • AI</h2>
 
     <div class="menu-box">
-        <button class="menu-btn" onclick="location.href='fasttyping.html'">
-            ⚡Typing speed Test⚡
+
+        <!-- 🎮 GAMES BUTTON -->
+        <button class="menu-btn" onclick="location.href='games.html'">
+            🎮 Games
         </button>
+
+        <!-- 🤖 AI BOT BUTTON -->
+        <button class="menu-btn" onclick="openAI()">
+            🤖 AI Bot
+        </button>
+
+    </div>
+
+    <!-- 🤖 AI CHAT -->
+    <div id="aiBox">
+        <h2>AI Assistant</h2>
+
+        <div id="chatBox"></div>
+
+        <input type="text" id="userInput" placeholder="Ask anything...">
+        <button onclick="sendMessage()">Send</button>
     </div>
 
     <div class="signature">Made with ❤️ by Swayam Sherekar</div>
-     
+
+<script>
+function openAI() {
+    document.getElementById("aiBox").style.display = "block";
+}
+
+/* TEMP FAKE AI (frontend only) */
+function sendMessage() {
+    let input = document.getElementById("userInput").value;
+
+    let chat = document.getElementById("chatBox");
+
+    chat.innerHTML += "<p><b>You:</b> " + input + "</p>";
+
+    let reply = "I am an AI created by Swayam Sherekar 😎";
+
+    chat.innerHTML += "<p><b>AI:</b> " + reply + "</p>";
+}
+</script>
 
 </body>
 </html>
-
-
