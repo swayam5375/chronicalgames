@@ -1,236 +1,287 @@
-/* =========================
-   FINAL game.js (FULL UPDATED)
-   - Case insensitive typing
-   - 100 words (4 / 7 / 10 letters)
-   - No-repeat per game run
-   - Separate highscores for easy/medium/hard
-   - Sounds: correct / click / timeover (WAV)
-   - Zoom score animation
-   - End popup (Restart / Exit)
-   ========================= */
+/* GLOBAL */
+body {
+    margin: 0;
+    background: #000;
+    color: #fff;
+    font-family: Arial;
 
-/* ---------- SOUNDS ---------- */
-const soundCorrect = new Audio("sounds/correct.wav");
-const soundClick = new Audio("sounds/click.wav");
-const soundTimeOver = new Audio("sounds/timeover.wav");
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 
-/* ---------- GAME STATE ---------- */
-let score = 0;
-let timeLeft = 0;
-let timer = null;
-let currentDifficulty = "";
-let usedWords = [];
-let inputListenerAttached = false;
-
-/* ---------- HIGHSCORES ---------- */
-let high_easy = parseInt(localStorage.getItem("highscore_easy")) || 0;
-let high_medium = parseInt(localStorage.getItem("highscore_medium")) || 0;
-let high_hard = parseInt(localStorage.getItem("highscore_hard")) || 0;
-
-/* ---------- WORD LISTS ---------- */
-const words_easy = [
- "time","game","code","fast","play","jump","hero","love","king","moon",
- "star","fire","wind","ball","rock","wolf","bird","rain","snow","road",
- "blue","dark","door","ring","ship","team","song","leaf","tree","gold"
-];
-
-const words_medium = [
- "monitor","charger","builder","captain","mission","playing","science","fantasy","digital","restart",
- "display","battery","process","network","control","execute","student","android","graphic","console",
- "physics","grammar","balance","history","message","imagine","journey","victory","college","pointer",
- "chapter","context","crystal","journeyx","packets"
-];
-
-const words_hard = [
- "keyboarder","monitoring","processing","university","programmer","developers","animationx","controllerz","spacecraft","foundation",
- "generation","technology","conversion","javascript","computation","prediction","connection","visionaryy","electricall","observation",
- "dedication","motivation","transistor","reflective","energytics","dictionary","adrenaline","refreshing","conclusion","adventurex",
- "impression","background","presentation","distribution","thermonuke"
-];
-
-/* ---------- DOM SHORTCUTS ---------- */
-const elWord = () => document.getElementById("word");
-const elInput = () => document.getElementById("input");
-const elScore = () => document.getElementById("score");
-const elHigh = () => document.getElementById("highscore");
-const elTime = () => document.getElementById("time");
-const elDifficultySelect = () => document.getElementById("difficultySelect");
-const elTimeSelect = () => document.getElementById("timeSelect");
-const elGameArea = () => document.getElementById("gameArea");
-const elPopup = () => document.getElementById("popup");
-const elFinalScore = () => document.getElementById("finalScore");
-const elFinalHigh = () => document.getElementById("finalHigh");
-
-/* ---------- INIT HIGHSCORE ---------- */
-function showInitialHigh() {
-    if (elHigh()) elHigh().innerText = high_easy;
-}
-showInitialHigh();
-
-/* ---------- LIST BASED ON DIFFICULTY ---------- */
-function getListForDifficulty(dif) {
-    if (dif === "easy") return words_easy.slice();
-    if (dif === "medium") return words_medium.slice();
-    return words_hard.slice();
+    animation: bgChange 6s infinite alternate;
 }
 
-/* ---------- NO-REPEAT WORD GENERATOR ---------- */
-function pickRandomNoRepeat(dif) {
-    let list = getListForDifficulty(dif);
-    let available = list.filter(w => !usedWords.includes(w));
+/* BG animation */
+@keyframes bgChange {
+    0% { background-color: #000; }
+    25% { background-color: #0a0014; }
+    50% { background-color: #001032; }
+    75% { background-color: #001a20; }
+    100% { background-color: #000; }
+}
 
-    if (available.length === 0) {
-        usedWords = usedWords.filter(w => !list.includes(w));
-        available = list.slice();
+/* 🔥 HEADER CENTERED */
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    padding: 20px;
+    background: linear-gradient(90deg, #111, #222, #111);
+    border-bottom: 2px solid #0ff;
+    box-shadow: 0 0 20px #0ff;
+    flex-wrap: wrap;
+}
+
+.logo {
+    font-size: 30px;
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff;
+}
+
+/* NAVIGATION */
+nav a {
+    margin: 0 15px;
+    color: #0ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-shadow: 0 0 10px #0ff;
+}
+
+/* HERO SECTION */
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.btn {
+    background: #0ff;
+    color: #000;
+    padding: 20px 35px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.btn:hover {
+    box-shadow: 0 0 20px #0ff;
+}
+
+/* GAME UI */
+.typing-container {
+    text-align: center;
+    margin-top: 60px;
+}
+
+/* POPUP */
+.endPopup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.popupBox {
+    background: #111;
+    padding: 25px;
+    border-radius: 10px;
+    border: 2px solid #0ff;
+    text-shadow: 0 0 10px #0ff;
+}
+
+/* Exit */
+.exitBtn {
+    margin-top: 10px;
+    background: red;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 15px;
+    margin-top: auto;
+    color: #0ff;
+    text-shadow: 0 0 8px #0ff;
+    font-weight: bold;
+}
+
+/* Difficulty Buttons */
+.options button {
+    padding: 18px 35px;
+    font-size: 22px;
+    border-radius: 10px;
+    margin: 10px;
+    background: #0ff;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.options button:hover {
+    box-shadow: 0 0 20px #0ff;
+}
+
+/* Word Display */
+#word {
+    font-size: 45px;
+    margin-bottom: 25px;
+    text-shadow: 0 0 12px #0ff;
+}
+
+#input {
+    font-size: 28px;
+    padding: 15px;
+    width: 350px;
+    max-width: 90%;
+    background: #fff;
+    color: #000;
+    border-radius: 8px;
+    border: 2px solid #0ff;
+}
+
+/* SCORE ANIMATION */
+.score-zoom {
+    animation: zoomBurst 0.25s ease;
+}
+
+@keyframes zoomBurst {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+}
+
+/* ===================================
+       🤖 AI BOT UI (NEW ADDITION)
+   =================================== */
+
+.ai-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.ai-box {
+    width: 520px;
+    max-width: 95%;
+    height: 520px;
+    background: #111;
+    border: 2px solid #0ff;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 25px #0ff;
+}
+
+.ai-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    color: #0ff;
+    font-weight: bold;
+    border-bottom: 1px solid #333;
+}
+
+/* Chat area */
+.chat-box {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    text-align: left;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* Chat bubbles spacing */
+.chat-box div {
+    margin: 6px 0;
+}
+
+/* Input area */
+.chat-input {
+    display: flex;
+    gap: 8px;
+    padding: 10px;
+    border-top: 1px solid #333;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 6px;
+    border: none;
+}
+
+.chat-input button {
+    padding: 10px 15px;
+    background: #0ff;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+/* ===================================
+       📱 RESPONSIVE FIX
+   =================================== */
+@media (max-width: 600px) {
+
+    header {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
     }
 
-    const idx = Math.floor(Math.random() * available.length);
-    const chosen = available[idx];
-
-    usedWords.push(chosen);
-    return chosen;
-}
-
-/* ---------- SET DIFFICULTY ---------- */
-function setDifficulty(dif) {
-    soundClick.play();
-    currentDifficulty = dif;
-
-    if (dif === "easy") elHigh().innerText = high_easy;
-    else if (dif === "medium") elHigh().innerText = high_medium;
-    else elHigh().innerText = high_hard;
-
-    elDifficultySelect().style.display = "none";
-    elTimeSelect().style.display = "block";
-}
-
-/* ---------- START GAME ---------- */
-function startGame(seconds) {
-    soundClick.play();
-
-    score = 0;
-    timeLeft = seconds;
-    usedWords = [];
-
-    elScore().innerText = score;
-    elTime().innerText = timeLeft;
-
-    elTimeSelect().style.display = "none";
-    elGameArea().style.display = "block";
-
-    if (!inputListenerAttached) {
-        inputListenerAttached = true;
-        elInput().addEventListener("input", handleInput);
+    .logo {
+        font-size: 26px;
     }
 
-    showNextWord();
-    startTimer();
-}
+    nav a {
+        font-size: 18px;
+    }
 
-/* ---------- SHOW NEXT WORD ---------- */
-function showNextWord() {
-    const word = pickRandomNoRepeat(currentDifficulty);
-    elWord().innerText = word;
+    #word {
+        font-size: 32px;
+    }
 
-    elWord().style.transform = "scale(1.15)";
-    elWord().style.transition = "150ms";
-    setTimeout(() => elWord().style.transform = "scale(1)", 150);
-}
+    #input {
+        width: 80%;
+        font-size: 22px;
+    }
 
-/* ---------- INPUT HANDLER (CASE-INSENSITIVE) ---------- */
-function handleInput(e) {
-    const typed = e.target.value.trim().toLowerCase();
-    const target = elWord().innerText.toLowerCase();
+    .options button {
+        width: 85%;
+        font-size: 20px;
+        padding: 14px;
+    }
 
-    if (typed === target) {
-        soundCorrect.play();
-        score++;
-        elScore().innerText = score;
+    .popupBox {
+        width: 85%;
+        padding: 18px;
+    }
 
-        elScore().classList.remove("score-zoom");
-        void elScore().offsetWidth;
-        elScore().classList.add("score-zoom");
+    footer {
+        font-size: 14px;
+        padding: 10px;
+    }
 
-        e.target.value = "";
-
-        if (currentDifficulty === "easy") {
-            if (score > high_easy) {
-                high_easy = score;
-                localStorage.setItem("highscore_easy", high_easy);
-                elHigh().innerText = high_easy;
-            }
-        } else if (currentDifficulty === "medium") {
-            if (score > high_medium) {
-                high_medium = score;
-                localStorage.setItem("highscore_medium", high_medium);
-                elHigh().innerText = high_medium;
-            }
-        } else {
-            if (score > high_hard) {
-                high_hard = score;
-                localStorage.setItem("highscore_hard", high_hard);
-                elHigh().innerText = high_hard;
-            }
-        }
-
-        showNextWord();
+    .ai-box {
+        height: 90%;
     }
 }
-
-const resetBtn = document.getElementById("resetBtn");
-
-if (resetBtn) {
-  resetBtn.addEventListener("click", () => {
-    if (confirm("Reset all scores?")) {
-      localStorage.clear();
-      location.reload();
-    }
-  });
-}
-
-
-/* ---------- TIMER ---------- */
-function startTimer() {
-    if (timer) clearInterval(timer);
-
-    timer = setInterval(() => {
-        timeLeft--;
-        elTime().innerText = timeLeft;
-
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            onTimeOver();
-        }
-    }, 1000);
-}
-
-/* ---------- TIME OVER ---------- */
-function onTimeOver() {
-    soundTimeOver.play();
-
-    const hs = currentDifficulty === "easy" ? high_easy :
-               currentDifficulty === "medium" ? high_medium :
-               high_hard;
-
-    elFinalScore().innerText = score;
-    elFinalHigh().innerText = hs;
-
-    elPopup().style.display = "flex";
-    elInput().disabled = true;
-}
-
-/* ---------- RESTART ---------- */
-function restartGame() {
-    soundClick.play();
-    location.reload();
-}
-
-/* ---------- EXIT ---------- */
-function exitGame() {
-    soundClick.play();
-    window.location.href = "index.html";
-}
-
-/* ---------- END ---------- */
-
-
