@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- SUPER IMPORTANT FOR MOBILE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fast Typing - ChronicalGames</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -12,80 +12,54 @@
 <header>
     <div class="logo">ChronicalGames</div>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="games.html">Games</a>
+        <a href="/index.html">Home</a>
+        <a href="/games.html">Games</a>
     </nav>
 </header>
 
 <div class="typing-container">
 
-    <h1 style="margin-top: 40px; font-size: 28px;">⚡ Fast Typing Challenge ⚡</h1>
+    <h1 style="margin-top: 40px;">⚡ Fast Typing Challenge ⚡</h1>
 
-    <!-- Difficulty Select -->
-    <div id="difficultySelect" class="options" style="margin-top: 20px;">
-        <p style="font-size: 18px;">Select Difficulty:</p>
+    <!-- Difficulty -->
+    <div id="difficultySelect" class="options">
+        <p>Select Difficulty:</p>
 
-        <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-            <button onclick="setDifficulty('easy')">Easy 😀</button>
-            <button onclick="setDifficulty('medium')">Medium 😎</button>
-            <button onclick="setDifficulty('hard')">Hard 🔥</button>
-        </div>
+        <button onclick="setDifficulty('easy')">Easy 😀</button>
+        <button onclick="setDifficulty('medium')">Medium 😎</button>
+        <button onclick="setDifficulty('hard')">Hard 🔥</button>
     </div>
 
-    <!-- Time Select -->
-    <div id="timeSelect" class="options" style="display:none; margin-top: 20px;">
-        <p style="font-size:18px;">Select Time:</p>
+    <!-- Time -->
+    <div id="timeSelect" class="options" style="display:none;">
+        <p>Select Time:</p>
 
-        <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-            <button onclick="startGame(20)">20 sec</button>
-            <button onclick="startGame(30)">30 sec</button>
-            <button onclick="startGame(60)">60 sec</button>
-        </div>
+        <button onclick="startGame(20)">20 sec</button>
+        <button onclick="startGame(30)">30 sec</button>
+        <button onclick="startGame(60)">60 sec</button>
     </div>
 
-    <!-- Game Area -->
-    <div id="gameArea" style="display:none; margin-top: 20px;">
+    <!-- Game -->
+    <div id="gameArea" style="display:none;">
 
-        <div id="word" style="margin-bottom: 20px;">---</div>
+        <div id="word">---</div>
 
-        <input id="input" placeholder="Type here..." style="max-width: 90%;">
+        <input id="input" placeholder="Type here...">
 
-        <div class="score-box" style="margin-top: 25px; font-size:18px;">
-            <div>Current Score: <span id="score">0</span></div>
+        <div class="score-box">
+            <div>Score: <span id="score">0</span></div>
             <div>High Score: <span id="highscore">0</span></div>
-            <div>Time Left: <span id="time">0</span>s</div>
+            <div>Time: <span id="time">0</span></div>
         </div>
 
-    </div>
-
-    <!-- Popup -->
-    <div id="popup" class="endPopup" style="display:none;">
-        <div class="popupBox">
-            <h2>⏳ Time Over!</h2>
-            <p>Your Score: <span id="finalScore">0</span></p>
-            <p>Highest Score: <span id="finalHigh">0</span></p>
-
-            <button onclick="restartGame()">Restart</button>
-            <a href="index.html"><button class="exitBtn">Exit</button></a>
-        </div>
     </div>
 
 </div>
 
-<button id="resetBtn" style="
-  margin-top: 12px;
-  padding: 8px 16px;
-  background: red;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-">
-  Reset Scores
-</button>
+<button id="resetBtn">Reset Scores</button>
 
+<!-- 🔥 MOST IMPORTANT FIX -->
+<script src="/game.js"></script>
 
-<script src="game.js"></script>
 </body>
 </html>
-
